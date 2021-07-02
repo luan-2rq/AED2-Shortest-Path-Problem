@@ -12,6 +12,18 @@ public class Edge{
     }
 }
 
+public class Path{
+    int start;
+    int end;
+    double weight;
+
+    public Path(int start, int end, int weight){
+        this.start = start;
+        this.end = end;
+        this.weight = weight;
+    }
+}
+
 public class Digraph{
     
     //Number of vertices
@@ -85,18 +97,45 @@ public class Digraph{
     }
 }
 
+//Minheap for the dijkstra algorithm
 public class MinHeap{
 
-    //Vector containing edges
-    Edge[] vector;
-    //Number of edges
+    //Vector containing paths
+    Path[] heap;
+    //adj matrix 
+    int adj[][];
+    //Number of paths
     int E;
 
     public MinHeap(int n){
-        vector = new Edge[n];
+        vector = new Path[n];
+        adj = new int[n][n];
     }
 
-    public void insert(){
+    public boolean insert(Path edge){
+        boolean res = false;
+  
+        //checking if the start and end vertices are not less than 1
+        if(edge.start < 1 || edge.end < 1) return res;
+        //checking if the start vertices and end doesnt surpass the maximum range
+        if(edge.start > n || edge.end > n) return res;
+        //checking if the element already exists
+        if(this.adj[edge.start][edge.end] == 1) return res;
+
+
+        this.adj[edge.start][edge.end] = 1;
+        this.heap[this.E] = edge;
+    
+        while (heap[this.E].weight < heap[this.E/2].weight) {
+
+        }
+        this.E++;
+        res = true;
+        return res;
+    }
+
+    public boolean getMin(){
+
     }
 
 }
