@@ -1,14 +1,39 @@
 import java.util.Random;
 
+public class Edge{
+    int start;
+    int end;
+    double weight;
+
+    public Edge(int start, int end, int weight){
+        this.start = start;
+        this.end = end;
+        this.weight = weight;
+    }
+}
+
 public class Digraph{
+    
+    //Number of vertices
     int V;
-    int A;
+    //Number of edges(edges can also be referred to as archs)
+    int E;
+    //Adjacency Matrix
     double[][] adj;
+
+    //Vector containing all the edges
+    //Edge[] edges;
 
     public Digraph(int V, double P, double K){
         this.V = V;
-        this.A = 0;
+        this.E = 0;
+
         this.adj = new double[V][V];
+        
+        //int maximumNumberOfEdges = V(V-1)/2;
+        //edges = new Edge[maximumNumberOfEdges];
+
+        //Initializing digraph, creating edges and setting the weight to each one of them
         initRandomPonderateDigraph(P, K);
     }
 
@@ -16,7 +41,9 @@ public class Digraph{
         for (int i = 0; i < this.V; i++) {
             for (int j = 0; j < this.V; j++){
                 if(i!=j){
-                    adj[i][j] = trueProbability(p)?getRandomNumber(0, k):0;
+                    double randomWeight = trueProbability(p)?getRandomNumber(0, k):0;
+                    adj[i][j] = randomWeight;
+                    E++;
                 }
             }
         }
@@ -27,6 +54,7 @@ public class Digraph{
 		return randomValue;
 	}
 
+    //Given a certain probability this method will return true acoordingly to this probability
     public boolean trueProbability(double p){
         if(Math.random() <= p){
             return true;
@@ -34,15 +62,41 @@ public class Digraph{
         return false;
     }
 
-    public void imprimir(){
+    public void print(){
         for (int v = 0; v < this.V; v++) {
             System.out.println(v + ": ");
             for (int w = 0; w < this.V; w++){
-                if (this.adj[v][w] == 1){
+                if (this.adj[v][w] > 0){
                     System.out.print(w);
                 }
                 System.out.println();
             }
         }
     }
+    //Dijkstra
+
+    /* This algorithm will find the single-source shortest-path on a weighted
+    directed graph only if all edge weights are nonnegative. */
+    public void dijkstra(){
+
+        //Vertices whose final shortest-path to the source have already been calculated
+        int[] S;
+
+    }
+}
+
+public class MinHeap{
+
+    //Vector containing edges
+    Edge[] vector;
+    //Number of edges
+    int E;
+
+    public MinHeap(int n){
+        vector = new Edge[n];
+    }
+
+    public void insert(){
+    }
+
 }
