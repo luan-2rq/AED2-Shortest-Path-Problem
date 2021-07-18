@@ -57,13 +57,19 @@ public class Digraph{
 
     public void print(){
         for (int v = 0; v < this.V; v++) {
-            System.out.println(v + ": ");
+            System.out.print(v + ": ");
+            int printedArchCount = 0;
             for (int w = 0; w < this.V; w++){
-                if (this.adj[v][w] > 0){
-                    System.out.print(w);
+                if (this.adj[v][w] >= 0){
+                    if(printedArchCount > 0){
+                        System.out.print(", " + w);
+                    }else{
+                        System.out.print(w);
+                    }
+                    printedArchCount++;
                 }
-                System.out.println();
             }
+            System.out.println();
         }
     }
 }
