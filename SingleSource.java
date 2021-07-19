@@ -9,12 +9,12 @@ public class SingleSource{
 
     public void initializeSingleSource(Digraph G, int s){
         vertices = new Vertex[G.V + 1];
-        for(int i = 1; i <= G.V; i++){
-            vertices[i] = new Vertex(i);
-            vertices[i].dist = i;
+        for(int i = 0; i < G.V; i++){
+            vertices[i] = new Vertex(i + 1);
+            vertices[i].dist = Integer.MAX_VALUE;
             vertices[i].pred = null;
         }
-        Vertex S = vertices[s];
+        Vertex S = vertices[s - 1];
         S.dist = 0;
     }
 
@@ -32,26 +32,26 @@ public class SingleSource{
         VertexMinHeap Q = new VertexMinHeap(G.V);
 
         for(int i = 0; i < G.V; i++){
-            Q.insert(vertices[i + 1]);
+            Q.insert(vertices[i]);
         }
 
         while(Q.V > 0){
             Vertex u = Q.extractMin();
             S.insert(u);
-            for(int i = 1; i <= G.V; i++){
-                if(G.adj[u.id][i] != -1){
-                    Vertex v = vertices[i];
-                    relax(u, v, G.adj);
-                }
+            Node currentNode = G.adjList[u.id - 1].getFirst();
+            while(currentNode != null){
+                Vertex v = vertices[currentNode.id - 1];
+                relax(u, v, currentNode.weight);
+                currentNode = currentNode.next;
             }
         }
 
         return S;
     }
 
-    public void relax(Vertex u, Vertex v, double[][] w){
-        if(v.dist > u.dist + w[u.id][v.id]){
-            v.dist = u.dist + w[u.id][v.id];
+    public void relax(Vertex u, Vertex v, Double w){
+        if(v.dist > u.dist + w){
+            v.dist = u.dist + w;
             v.pred = u;
         }
     }
@@ -82,11 +82,15 @@ public class SingleSource{
     */
 
     public static void main(String args[]){
-        Digraph digraph = new Digraph(10, 0.4, 5, true);
+        Digraph digraph = new Digraph(10, 0.8, 200, false);
         digraph.print();
         SingleSource singleSource = new SingleSource();
         VertexMinHeap djikstraMinHeap = singleSource.dijkstra(digraph, 3);
-        for(int i = 0; i < 10; i++) System.out.println(i + " - " + djikstraMinHeap.extractMin().dist);
+        for(int i = 0; i < 10; i++) {
+            Vertex vertex = djikstraMinHeap.extractMin();
+            System.out.println(vertex.id + " - " + vertex.dist);
+        }
+
         //djikstraMinHeap.print();
     }
 }

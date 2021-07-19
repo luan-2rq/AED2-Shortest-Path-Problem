@@ -4,8 +4,8 @@ public class Digraph{
     int V;
     //Number of edges(edges can also be referred to as archs)
     int E;
-    //Adjacency Matrix
-    double[][] adj;
+    //Adjacency List
+    AdjList[] adjList;
     //Boolean informing if digraph is acyclic
     boolean acyclic;
 
@@ -14,7 +14,11 @@ public class Digraph{
         this.E = 0;
 
         //The size of the matriz is V + 1, because the index of the vertices will begin at 1
-        this.adj = new double[V + 1][V + 1];
+        this.adjList = new AdjList[V];
+
+        for(int i = 0; i < V; i++){
+            this.adjList[i] = new AdjList(V);
+        }
 
         this.acyclic = acyclic;
 
@@ -23,17 +27,17 @@ public class Digraph{
     }
 
     public void initRandomPonderateDigraph(double p, double k){
-        for (int i = 1; i <= this.V; i++) {
-            for (int j = 1; j <= this.V; j++){
+        for (int i = 0; i < this.V; i++) {
+            for (int j = 0; j < this.V; j++){
                 if(acyclic){
-                    if(i!=j){
+                    if(i<j){
                         double randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
-                        adj[i][j] = randomWeight;
+                        if(randomWeight != -1)adjList[i].add(new Node(j + 1, randomWeight));
                         E++;
                     }
                 }else{
                     double randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
-                    adj[i][j] = randomWeight;
+                    if(randomWeight != -1)adjList[i].add(new Node(j + 1, randomWeight));
                     E++;
                 }
                     
@@ -57,17 +61,17 @@ public class Digraph{
 
     public void print(){
         for (int v = 0; v < this.V; v++) {
-            System.out.print(v + ": ");
+            System.out.print(v + 1 + ": ");
             int printedArchCount = 0;
-            for (int w = 0; w < this.V; w++){
-                if (this.adj[v][w] >= 0){
-                    if(printedArchCount > 0){
-                        System.out.print(", " + w);
-                    }else{
-                        System.out.print(w);
-                    }
-                    printedArchCount++;
-                }
+            Node currentNode = this.adjList[v].getFirst();
+            while(currentNode != null){
+                if(printedArchCount > 0){
+                    System.out.print(", " + currentNode.id + ":" + currentNode.weight);
+                }else{
+                    System.out.print(currentNode.id + ":" + currentNode.weight);
+                 }
+                printedArchCount++;
+                currentNode = currentNode.next;
             }
             System.out.println();
         }

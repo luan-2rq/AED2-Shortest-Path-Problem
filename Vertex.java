@@ -1,4 +1,5 @@
-public class Vertex{
+public class Vertex {
+    
     int id;
 
     //dist is the same as d from Cormen's book

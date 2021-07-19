@@ -44,18 +44,6 @@ public class VertexMinHeap{
         return null;
     }
 
-    // Function to print the contents of the heap
-    public void print()
-    {
-        for (int i = 0; i < V / 2; i++) {
-            System.out.print(" PARENT : " + heap[i].dist
-                                + " LEFT CHILD : " + heap[2 * i + 1].dist
-                                + " RIGHT CHILD :" + heap[2 * i + 2].dist);
-            System.out.println();
-        }
-    }
-     
-
     public void minHeapify(int pos)
     {
         int left = (2 * pos) + 1;
