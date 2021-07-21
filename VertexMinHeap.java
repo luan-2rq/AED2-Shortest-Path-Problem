@@ -13,9 +13,7 @@ public class VertexMinHeap{
     public boolean insert(Vertex vertex){
         boolean res = false;
   
-        //checking if the start and end vertices are not less than 1
         if(vertex.id < 1)return res;
-        //checking if the start vertices and end doesnt surpass the maximum range
         if(vertex.id > heap.length)return res;
 
         this.heap[this.V] = vertex;

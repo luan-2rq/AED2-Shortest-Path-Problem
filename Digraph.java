@@ -9,8 +9,15 @@ public class Digraph{
     //Boolean informing if digraph is acyclic
     boolean acyclic;
 
-    public Digraph(int V, double P, double K, boolean acyclic){
-        this.V = V;
+    public Digraph(int S, double P, double K, boolean acyclic){
+
+        if(acyclic){
+            this.V = (int) Math.round(((P-1) + Math.sqrt(Math.pow((1-P), 2) + 4 * P * S))/(2*P));
+        }else{
+            //Preciso mudar esta formula aqui de baixo
+            this.V = (int) Math.round(((P-1) + Math.sqrt(Math.pow((1-P), 2) + 4 * P * S))/(2*P));
+        }
+
         this.E = 0;
 
         //The size of the matriz is V + 1, because the index of the vertices will begin at 1
@@ -36,9 +43,11 @@ public class Digraph{
                         E++;
                     }
                 }else{
-                    double randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
-                    if(randomWeight != -1)adjList[i].add(new Node(j + 1, randomWeight));
-                    E++;
+                    if(i != j){
+                        double randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
+                        if(randomWeight != -1)adjList[i].add(new Node(j + 1, randomWeight));
+                        E++;
+                    }
                 }
                     
             }
