@@ -12,9 +12,8 @@ public class Digraph{
     public Digraph(int S, double P, double K, boolean acyclic){
 
         if(acyclic){
-            this.V = (int) Math.round(((P-1) + Math.sqrt(Math.pow((1-P), 2) + 4 * P * S))/(2*P));
+            this.V = (int) Math.round(((P / 2 - 1) + Math.sqrt(Math.pow((1 - P / 2), 2) + 4 * P / 2 * S)) / (2 * P / 2));;
         }else{
-            //Preciso mudar esta formula aqui de baixo
             this.V = (int) Math.round(((P-1) + Math.sqrt(Math.pow((1-P), 2) + 4 * P * S))/(2*P));
         }
 
@@ -38,13 +37,13 @@ public class Digraph{
             for (int j = 0; j < this.V; j++){
                 if(acyclic){
                     if(i<j){
-                        double randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
+                        int randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
                         if(randomWeight != -1)adjList[i].add(new Node(j + 1, randomWeight));
                         E++;
                     }
                 }else{
                     if(i != j){
-                        double randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
+                        int randomWeight = trueProbability(p)?getRandomNumber(0, k):-1;
                         if(randomWeight != -1)adjList[i].add(new Node(j + 1, randomWeight));
                         E++;
                     }
@@ -55,8 +54,8 @@ public class Digraph{
         }
     }
 
-    public double getRandomNumber(double min, double max) {
-		double randomValue = min + (max - min) * Math.random();
+    public int getRandomNumber(double min, double max) {
+		int randomValue = (int)Math.round(min + (max - min) * Math.random());
 		return randomValue;
 	}
 

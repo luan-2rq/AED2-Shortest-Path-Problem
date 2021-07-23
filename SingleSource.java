@@ -49,7 +49,7 @@ public class SingleSource{
         return S;
     }
 
-    public void relax(Vertex u, Vertex v, Double w){
+    public void relax(Vertex u, Vertex v, int w){
         if(v.dist > u.dist + w){
             v.dist = u.dist + w;
             v.pred = u;
@@ -82,11 +82,11 @@ public class SingleSource{
     */
 
     public static void main(String args[]){
-        Digraph digraph = new Digraph(10, 0.8, 200, false);
+        Digraph digraph = new Digraph(1000, 0.5, 200, false);
         digraph.print();
         SingleSource singleSource = new SingleSource();
         VertexMinHeap djikstraMinHeap = singleSource.dijkstra(digraph, 3);
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < digraph.V; i++) {
             Vertex vertex = djikstraMinHeap.extractMin();
             System.out.println(vertex.id + " - " + vertex.dist);
         }

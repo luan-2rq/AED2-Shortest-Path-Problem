@@ -1,11 +1,11 @@
 public class Node{
 
     int id;
-    double weight;
+    int weight;
 
     Node next;
 
-    public Node(int id, double weight){
+    public Node(int id, int weight){
         this.id = id;
         this.weight = weight;
     }
