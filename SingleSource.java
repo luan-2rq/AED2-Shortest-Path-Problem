@@ -18,6 +18,14 @@ public class SingleSource{
         S.dist = 0;
     }
 
+    
+    public void relax(Vertex u, Vertex v, int w){
+        if(v.dist > u.dist + w){
+            v.dist = u.dist + w;
+            v.pred = u;
+        }
+    }
+
     //*Dijkstra*//
     /* This algorithm will find the single-source shortest-path on a weighted
     directed graph only if all edge weights are nonnegative. */
@@ -45,41 +53,37 @@ public class SingleSource{
                 currentNode = currentNode.next;
             }
         }
-
         return S;
     }
 
-    public void relax(Vertex u, Vertex v, int w){
-        if(v.dist > u.dist + w){
-            v.dist = u.dist + w;
-            v.pred = u;
-        }
-    }
-
-
-    /* Bellman-Ford
+    // Bellman-Ford
     
-    public Vertex bellmanFord(Digraph G, int s){
-    
+    public boolean bellmanFord(Digraph G, int s){
         initializeSingleSource(G, s);
-        Vertex v, w;
-        
-        link p;
-        
-        for(v=0; v < G.V; v++){
-            for( each edge (u, v) pertencente a G.E)
-                relax(u, v, w)  
+        for(int i = 1; i < G.V; i++){
+            for(int j = 0; j < G.V; j++){
+                Node currentEdge = G.adjList[j].getFirst();
+                while(currentEdge != null){
+                    Vertex u = vertices[j];
+                    Vertex v = vertices[currentEdge.id - 1];
+                    int w = currentEdge.weight;
+                    relax(u, v, w);
+                    currentEdge = currentEdge.next;
+                }
+            }
         }
-        for each edge (u,v) pertencente a G.E
-            if v.d > u.d + w(u, v)
-            return false
-
-        return true
-        
-        return null;
+        for(int i = 0; i < G.V; i++){
+            Node currentEdge = G.adjList[i].getFirst();
+            while(currentEdge != null){
+                Vertex u = vertices[i];
+                Vertex v = vertices[currentEdge.id - 1];
+                int w = currentEdge.weight;
+                if(v.dist > u.dist + w)return false;
+                currentEdge = currentEdge.next;
+            }
+        }
+        return true;
     }
-    
-    */
 
     public static void main(String args[]){
         Digraph digraph = new Digraph(1000, 0.5, 200, false);
