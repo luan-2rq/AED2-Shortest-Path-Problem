@@ -2,6 +2,9 @@ public class SingleSource{
 
     //Vector containing all the edges
     Vertex[] vertices;
+    int[] lbl;
+    int count;
+    int[] ts;
 
     public SingleSource(){
 
@@ -25,6 +28,35 @@ public class SingleSource{
             v.pred = u;
         }
     }
+    
+    
+    public void DFS(Digraph G){
+        int v;
+        lbl = new int[G.V];
+        ts = new int[G.V];
+        count = G.V; 
+
+        for(v = 0; v < G.V; v++){
+            ts[v] = -1;
+            lbl[v] = -1;
+        }
+        for(v = 0; v < G.V; v++){
+            if(lbl[v] == -1)
+            DFSvisit(G, v);
+        }
+    }
+
+    public void DFSvisit(Digraph G, int v){
+        
+        Node p;
+        lbl[v] = 0;
+        for(p = G.adjList[v].getFirst(); p != null; p = p.next){ 
+            if(lbl[p.next.id-1] == -1)
+            DFSvisit(G, p.next.id-1);    
+        }
+        ts[count--] = v;
+    }
+
 
     //*Dijkstra*//
     /* This algorithm will find the single-source shortest-path on a weighted
@@ -84,6 +116,25 @@ public class SingleSource{
         }
         return true;
     }
+
+
+    // DAG
+
+    public void DAGmin(Digraph G, int s){
+        DFS(G);        
+        initializeSingleSource(G, s);
+        for(int i = 0; i < G.V; i++){
+            Node current = G.adjList[i].getFirst();
+            while(current != null){
+                Vertex u = vertices[i];
+                Vertex v = vertices[current.id - 1];
+                int w = current.weight;
+                relax(u, v, w);
+                current = current.next;
+            }
+        }
+    }
+
 
     public static void main(String args[]){
         Digraph digraph = new Digraph(1000, 0.5, 200, false);

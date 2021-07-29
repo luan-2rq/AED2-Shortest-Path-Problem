@@ -59,7 +59,7 @@ public class Digraph{
 		return randomValue;
 	}
 
-    //Given a certain probability this method will return true acoordingly to this probability
+    //Given a certain probability this method will return true accordingly to this probability
     public boolean trueProbability(double p){
         if(Math.random() <= p){
             return true;
