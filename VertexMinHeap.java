@@ -51,7 +51,7 @@ public class VertexMinHeap{
 
     public void minHeapifyUp(int pos)
     {
-       int parent = pos/2;
+       int parent = (pos - 1)/2;
        if (heap[parent].dist > heap[pos].dist)
        {
            Vertex tmp = heap[pos];

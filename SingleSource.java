@@ -1,3 +1,4 @@
+
 public class SingleSource{
 
     //Vector containing all the edges
@@ -84,7 +85,7 @@ public class SingleSource{
                 Vertex v = vertices[currentNode.id - 1];
                 relax(u, v, currentNode.weight);
                 currentNode = currentNode.next;
-            }
+            } 
         }
         return S;
     }
@@ -136,18 +137,21 @@ public class SingleSource{
             }
         }
     }
-
-
     public static void main(String args[]){
-        Digraph digraph = new Digraph(20, 0.5, 50, true);
+        Digraph digraph = new Digraph(1000, 0.5, 50, false);
         digraph.print();
         SingleSource singleSource = new SingleSource();
-        singleSource.DAGmin(digraph, 3);
+
+        long startTime = System.nanoTime();
+        VertexMinHeap minHeap = singleSource.dijkstra(digraph, 3);
+        Double duration  = (System.nanoTime() - startTime) / Math.pow(10, 6);
+
         for(int i = 0; i < digraph.V; i++) {
-            Vertex vertex = vertices[i];
+            Vertex vertex = minHeap.extractMin();
             System.out.println(vertex.id + " - " + vertex.dist);
         }
 
+        System.out.println("The duration to run was: " + duration + "ms");
         //djikstraMinHeap.print();
     }
 }
