@@ -1,20 +1,21 @@
 public class SingleSource{
 
     //Vector containing all the edges
-    Vertex[] vertices;
+    static Vertex[] vertices;
     int[] lbl;
     int count;
     int[] ts;
+    int infinity = Integer.MAX_VALUE / 10;
 
     public SingleSource(){
 
     }
 
     public void initializeSingleSource(Digraph G, int s){
-        vertices = new Vertex[G.V + 1];
+        vertices = new Vertex[G.V];
         for(int i = 0; i < G.V; i++){
             vertices[i] = new Vertex(i + 1);
-            vertices[i].dist = Integer.MAX_VALUE;
+            vertices[i].dist = infinity;
             vertices[i].pred = null;
         }
         Vertex S = vertices[s - 1];
@@ -40,6 +41,7 @@ public class SingleSource{
             ts[v] = -1;
             lbl[v] = -1;
         }
+
         for(v = 0; v < G.V; v++){
             if(lbl[v] == -1)
             DFSvisit(G, v);
@@ -47,14 +49,13 @@ public class SingleSource{
     }
 
     public void DFSvisit(Digraph G, int v){
-        
         Node p;
         lbl[v] = 0;
         for(p = G.adjList[v].getFirst(); p != null; p = p.next){ 
-            if(lbl[p.next.id-1] == -1)
-            DFSvisit(G, p.next.id-1);    
+            if(lbl[p.id - 1] == -1)
+            DFSvisit(G, p.id - 1);    
         }
-        ts[count--] = v;
+        ts[--count] = v;
     }
 
 
@@ -124,9 +125,10 @@ public class SingleSource{
         DFS(G);        
         initializeSingleSource(G, s);
         for(int i = 0; i < G.V; i++){
-            Node current = G.adjList[i].getFirst();
+            Node current = G.adjList[ts[i]].getFirst();
+            if(vertices[ts[i]].dist == infinity)continue;
             while(current != null){
-                Vertex u = vertices[i];
+                Vertex u = vertices[ts[i]];
                 Vertex v = vertices[current.id - 1];
                 int w = current.weight;
                 relax(u, v, w);
@@ -137,12 +139,12 @@ public class SingleSource{
 
 
     public static void main(String args[]){
-        Digraph digraph = new Digraph(1000, 0.5, 200, false);
+        Digraph digraph = new Digraph(20, 0.5, 50, true);
         digraph.print();
         SingleSource singleSource = new SingleSource();
-        VertexMinHeap djikstraMinHeap = singleSource.dijkstra(digraph, 3);
+        singleSource.DAGmin(digraph, 3);
         for(int i = 0; i < digraph.V; i++) {
-            Vertex vertex = djikstraMinHeap.extractMin();
+            Vertex vertex = vertices[i];
             System.out.println(vertex.id + " - " + vertex.dist);
         }
 

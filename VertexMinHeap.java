@@ -10,24 +10,11 @@ public class VertexMinHeap{
         heap = new Vertex[n];
     }
 
-    public boolean insert(Vertex vertex){
-        boolean res = false;
-  
-        if(vertex.id < 1)return res;
-        if(vertex.id > heap.length)return res;
-
+    public void insert(Vertex vertex){
+        if(V >= heap.length)return;
         this.heap[this.V] = vertex;
-        int pos = this.V;
         this.V++;
-    
-        while (heap[pos].dist < heap[(pos - 1) /2].dist) {
-            heap[pos] = heap[(pos - 1)/2];
-            heap[(pos - 1)/2] = vertex;
-            pos = (pos - 1)/2;
-        }
-
-        res = true;
-        return res;
+        minHeapifyUp(this.V - 1);
     }
 
     public Vertex extractMin(){
@@ -36,33 +23,41 @@ public class VertexMinHeap{
             Vertex min = heap[0];
             heap[0] = heap[V - 1];
             this.V--;
-            minHeapify(0);
+            minHeapifyDown(0);
             return min;
         }
         return null;
     }
 
-    public void minHeapify(int pos)
+    public void minHeapifyDown(int pos)
     {
         int left = (2 * pos) + 1;
         int right = (2 * pos) + 2;
-        if (!(pos >= V / 2)) {
-            if (heap[pos].dist > heap[left].dist
-                || heap[pos].dist > heap[right].dist) {
-                if (heap[left].dist < heap[right].dist) {
-                    Vertex vertex = heap[pos];
-                    heap[pos] = heap[left];
-                    heap[left] = vertex;
-                    minHeapify(left);
-                }
-                else {
-                    Vertex vertex = heap[pos];
-                    heap[pos] = heap[right];
-                    heap[right] = vertex;
-                    minHeapify(right);
-                }
-            }
+        int aux = pos;
+
+        if (left < V && heap[left].dist < heap[pos].dist){
+            aux = left;
+        }
+        if(right < V && heap[right].dist < heap[aux].dist){
+            aux = right;
+        }
+        if (aux != pos){
+           Vertex tmp = heap[pos];
+           heap[pos] = heap[aux];
+           heap[aux] = tmp;
+           minHeapifyDown(aux);
         }
     }
 
+    public void minHeapifyUp(int pos)
+    {
+       int parent = pos/2;
+       if (heap[parent].dist > heap[pos].dist)
+       {
+           Vertex tmp = heap[pos];
+           heap[pos] = heap[parent];
+           heap[parent] = tmp;
+           minHeapifyUp(parent);
+       }
+    }
 }
