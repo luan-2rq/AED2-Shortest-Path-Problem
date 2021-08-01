@@ -14,6 +14,7 @@ public class SingleSource{
 
     public void initializeSingleSource(Digraph G, int s){
         vertices = new Vertex[G.V];
+        infinity = Integer.MAX_VALUE/G.V;
         for(int i = 0; i < G.V; i++){
             vertices[i] = new Vertex(i + 1);
             vertices[i].dist = infinity;
@@ -136,22 +137,5 @@ public class SingleSource{
                 current = current.next;
             }
         }
-    }
-    public static void main(String args[]){
-        Digraph digraph = new Digraph(1000, 0.5, 50, false);
-        digraph.print();
-        SingleSource singleSource = new SingleSource();
-
-        long startTime = System.nanoTime();
-        VertexMinHeap minHeap = singleSource.dijkstra(digraph, 3);
-        Double duration  = (System.nanoTime() - startTime) / Math.pow(10, 6);
-
-        for(int i = 0; i < digraph.V; i++) {
-            Vertex vertex = minHeap.extractMin();
-            System.out.println(vertex.id + " - " + vertex.dist);
-        }
-
-        System.out.println("The duration to run was: " + duration + "ms");
-        //djikstraMinHeap.print();
     }
 }
