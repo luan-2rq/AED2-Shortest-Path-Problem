@@ -13,13 +13,16 @@ class MedidorTempo {
     }
 }
 
+// int[] s = {1000, 10000, 20000, 75000, 150000, 500000};
+// int[] s = {5000, 15000, 50000, 100000, 200000, 1000000};
 public class Testes {
 
     public static void main(String args[]){
 
-        int[] s = {1000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
+        int[] s = {1000, 5000, 10000, 15000, 20000, 50000, 75000, 100000, 150000, 200000, 500000, 1000000};
 		double[] p = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
         int k = 100;
+        int source = 10;
 
         SingleSource singleSource = new SingleSource();
         MedidorTempo medidorDeTempo = new MedidorTempo();
@@ -34,17 +37,17 @@ public class Testes {
 
                 //Tempo Bellmanford
                 medidorDeTempo.comeca("Bellmanford");
-                singleSource.bellmanFord(digraph, k);
+                singleSource.bellmanFord(digraph, source);
                 medidorDeTempo.termina("Bellmanford");
 
                 //Tempo Dijkstra
                 medidorDeTempo.comeca("Dijkstra");
-                singleSource.dijkstra(digraph, k);
+                singleSource.dijkstra(digraph, source);
                 medidorDeTempo.termina("Dijkstra");
 
                 //Tempo DagMin
                 medidorDeTempo.comeca("DAGMin");
-                singleSource.dijkstra(digraphDag, k);
+                singleSource.dijkstra(digraphDag, source);
                 medidorDeTempo.termina("DAGMin");
 
             }
