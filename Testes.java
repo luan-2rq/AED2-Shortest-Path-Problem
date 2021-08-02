@@ -1,25 +1,23 @@
 
 class MedidorTempo {
 
-    private long inicio;
+    private Long inicio;
     
     public void comeca(String metodo) {
-        System.out.println("Medindo o tempo (" + metodo + ")");
-        inicio = System.currentTimeMillis();
+        inicio = System.nanoTime();
     }
     
     public void termina(String metodo) {
-        System.out.println("Tempo gasto ("+ metodo + "): " + ((System.currentTimeMillis() - inicio) / 1000) + " segundo(s).\n");
+        double tempo = (System.nanoTime() - inicio) / Math.pow(10, 6);
+        System.out.println(tempo);
     }
 }
 
-// int[] s = {1000, 10000, 20000, 75000, 150000, 500000};
-// int[] s = {5000, 15000, 50000, 100000, 200000, 1000000};
 public class Testes {
 
     public static void main(String args[]){
 
-        int[] s = {1000, 5000, 10000, 15000, 20000, 50000, 75000, 100000, 150000, 200000, 500000, 1000000};
+        int[] s = {10000, 50000, 100000, 500000, 1000000, 5000000, 10000000};
 		double[] p = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
         int k = 100;
         int source = 10;
@@ -27,29 +25,47 @@ public class Testes {
         SingleSource singleSource = new SingleSource();
         MedidorTempo medidorDeTempo = new MedidorTempo();
 
-		//comecando o teste do maior t para o menor, pois quanto menor o t mais demora
-		for(int i = 0; i < s.length; i--){
+		for(int i = 0; i < s.length; i++){
+            System.out.println("\n");
             for (int j = 0; j < p.length; j++) {
+                System.out.println("|| Bellman-Ford com digrafo ciclico, com " + "P = " + p[j] + "; e S = " + s[i] + "; ||\n");
                 Digraph digraph = new Digraph(s[i], p[j], k, false);
-                Digraph digraphDag = new Digraph(s[i], p[j], k, true);
-
-                System.out.println("Testes com S = " + s[i] + "; e P = " + p[j] + ";\n");
-
                 //Tempo Bellmanford
                 medidorDeTempo.comeca("Bellmanford");
                 singleSource.bellmanFord(digraph, source);
                 medidorDeTempo.termina("Bellmanford");
-
+            }
+            for (int j = 0; j < p.length; j++) {
+                System.out.println("|| Dijkstra com digrafo ciclico, com " + "P = " + p[j] + "; e S = " + s[i] + "; ||\n");
+                Digraph digraph = new Digraph(s[i], p[j], k, false);
                 //Tempo Dijkstra
                 medidorDeTempo.comeca("Dijkstra");
                 singleSource.dijkstra(digraph, source);
                 medidorDeTempo.termina("Dijkstra");
-
-                //Tempo DagMin
+            }
+            for (int j = 0; j < p.length; j++) {
+                System.out.println("|| DAGmin com digrafo aciclico, com " + "P = " + p[j] + "; e S = " + s[i] + "; ||\n");
+                Digraph digraphDag = new Digraph(s[i], p[j], k, true);
+                 //Tempo DagMin
                 medidorDeTempo.comeca("DAGMin");
-                singleSource.dijkstra(digraphDag, source);
-                medidorDeTempo.termina("DAGMin");
-
+                singleSource.DAGmin(digraphDag, source);
+                medidorDeTempo.termina("Dijkstra");
+            }
+            for (int j = 0; j < p.length; j++) {
+                System.out.println("|| Bellman-Ford com digrafo aciclico, com " + "P = " + p[j] + "; e S = " + s[i] + "; ||\n");
+                Digraph digraph = new Digraph(s[i], p[j], k, true);
+                //Tempo Bellmanford
+                medidorDeTempo.comeca("Bellmanford");
+                singleSource.bellmanFord(digraph, source);
+                medidorDeTempo.termina("Bellmanford");
+            }
+            for (int j = 0; j < p.length; j++) {
+                System.out.println("|| Dijkstra com digrafo aciclico, com " + "P = " + p[j] + "; e S = " + s[i] + "; ||\n");
+                Digraph digraph = new Digraph(s[i], p[j], k, true);
+                //Tempo Dijkstra
+                medidorDeTempo.comeca("Dijkstra");
+                singleSource.dijkstra(digraph, source);
+                medidorDeTempo.termina("Dijkstra");
             }
         }
     }
